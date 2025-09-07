@@ -1,0 +1,35 @@
+Structured Veterinary Medical Chart
+
+Reason of consultation (anamnesis):
+• Owner reports that Bobby, a 12-year-old dog, has been coughing for several days.  
+• The coughing appears to be worsening, particularly noted at night.  
+• Occasionally, coughing is associated with mild vomiting.  
+• Despite the cough, Bobby maintains a normal appetite and has regular outdoor walks.
+
+General objective examination:
+• General appearance: Overweight dog.  
+• Breathing: Slightly increased breathing frequency.  
+• Temperature: Measured at 40.1°C, indicating a mild fever.  
+• Pulse: Heart rate is within normal limits.
+
+Specific objective examination:
+• Lung auscultation: Lung sounds suggest an infection; findings are consistent with pneumonia.  
+• Additional observations: No gastrointestinal abnormalities noted (no diarrhea); occasional vomiting linked to coughing episodes.
+
+Problem list:
+• Cough, worsening over recent days and more pronounced at night.  
+• Elevated body temperature (40.1°C).  
+• Altered lung sounds indicating a possible pulmonary infection (suspected pneumonia).  
+• Overweight condition.
+
+Differential diagnosis:
+• Primary consideration is pneumonia, potentially acquired through contact with other dogs or environmental exposure.  
+• Other respiratory infections could be contributing to the clinical picture.
+
+Advisory/Treatment:
+• Initiate antibiotic therapy, administered in a fluid form due to Bobby’s reluctance to take pills.  
+• Consider adding cough syrup to alleviate coughing symptoms.  
+• Recommend deworming, especially due to his raw food diet.  
+• Advise close monitoring: if there is no improvement within two days or if symptoms worsen, an earlier recheck is warranted.  
+• Schedule a follow-up visit in five days to reassess Bobby’s condition.  
+• Delay vaccinations until at least two to four weeks after the resolution of the infection and completion of antibiotic therapy.

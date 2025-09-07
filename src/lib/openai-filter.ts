@@ -7,31 +7,30 @@ export async function filterTranscriptionContent(
   try {
     const { text } = await generateText({
       model: openai("o3-mini"),
-      prompt: `You are a veterinary assistant helping to clean up consultation transcriptions. 
+      prompt: `You are a veterinary assistant helping to convert consultation transcriptions into structured medical charts.
 
-Your task is to filter out non-essential content while preserving all medically relevant information.
+Your task is to analyze the transcription and create a structured veterinary medical chart in English with the following sections:
 
-REMOVE:
-- Greetings and smalltalk (hello, how are you, weather talk, etc.)
-- Technical difficulties (microphone issues, "can you hear me", etc.)
-- Administrative talk (scheduling, payment discussions, etc.)
-- Filler words and repetitions
-- Off-topic conversations
+**REQUIRED STRUCTURE:**
+- **Reason of consultation (anamnesis):** Chief complaint and history as reported by the owner
+- **General objective examination:** General physical examination findings (vital signs, overall condition, etc.)
+- **Specific objective examination:** Specific/focused physical examination findings related to the chief complaint
+- **Problem list:** Identified clinical problems and abnormal findings
+- **Differential diagnosis:** Differential diagnoses being considered
+- **Advisory/treatment:** Treatment recommendations, medications, and follow-up instructions
 
-KEEP:
-- All medical symptoms and observations
-- Treatment discussions and recommendations
-- Medication names and dosages
-- Follow-up instructions
-- Patient history and concerns
-- Any veterinary medical terminology
-
-Maintain the speaker labels (Veterinarian, Speaker 1, Speaker 2) and preserve the conversation flow.
+**INSTRUCTIONS:**
+- Extract relevant information from the transcription and organize it into the above sections
+- If a section has no relevant information, write "Not documented" or "Not performed"
+- Use clear, professional medical terminology
+- Maintain clinical accuracy and completeness
+- Write everything in the language of the transcription
+- Focus only on medical information, ignore greetings, small talk, and administrative discussions
 
 Original transcription:
 ${rawTranscription}
 
-Filtered transcription:`,
+Structured veterinary medical chart:`,
       temperature: 0.1, // Low temperature for consistent filtering
     });
 
