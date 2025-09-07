@@ -50,10 +50,14 @@ export async function POST(request: NextRequest) {
       formattedTranscription
     );
 
+    // Generate public audio URL
+    const publicAudioUrl = `${process.env.R2_PUBLIC_URL}/${key}`;
+
     return NextResponse.json({
       success: true,
       transcription: filteredTranscription,
       originalTranscription: formattedTranscription,
+      audioUrl: publicAudioUrl,
       language: transcriptionResult.language,
       audioKey: key,
       warnings: transcriptionResult.warnings,

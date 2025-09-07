@@ -20,7 +20,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Mic, Pause, Play, Square, Timer, Volume2 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Mic, Pause, Play, Square, Timer, Volume2, Link } from "lucide-react";
 
 type RecordingState = "idle" | "recording" | "paused" | "stopped";
 type TranscriptionState = "idle" | "processing" | "completed" | "error";
@@ -42,6 +43,9 @@ export default function Home() {
   const [audioLevel, setAudioLevel] = useState<number>(0);
   const [language, setLanguage] = useState<string>("nl"); // Dutch default
   const [transcription, setTranscription] = useState<string>("");
+  const [originalTranscription, setOriginalTranscription] =
+    useState<string>("");
+  const [audioUrl, setAudioUrl] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [permissionGranted, setPermissionGranted] = useState<boolean>(false);
   const [testingAudio, setTestingAudio] = useState<boolean>(false);
@@ -307,6 +311,10 @@ export default function Home() {
       }
 
       setTranscription(result.transcription);
+      setOriginalTranscription(
+        result.originalTranscription || result.transcription
+      );
+      setAudioUrl(result.audioUrl || "");
       setTranscriptionState("completed");
     } catch (err) {
       setError(
@@ -324,9 +332,9 @@ export default function Home() {
       .padStart(2, "0")}`;
   };
 
-  const copyToClipboard = async () => {
+  const copyToClipboard = async (text: string) => {
     try {
-      await navigator.clipboard.writeText(transcription);
+      await navigator.clipboard.writeText(text);
       // You could add a toast notification here
     } catch (error) {
       setError("Failed to copy to clipboard");
@@ -334,12 +342,12 @@ export default function Home() {
     }
   };
 
-  const exportAsText = () => {
-    const blob = new Blob([transcription], { type: "text/plain" });
+  const exportAsText = (text: string, filename: string) => {
+    const blob = new Blob([text], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `consultation-${new Date().toISOString().split("T")[0]}.txt`;
+    a.download = filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -765,26 +773,127 @@ export default function Home() {
               )}
 
               {transcriptionState === "completed" && (
-                <div>
-                  <Textarea
-                    value={transcription}
-                    onChange={(e) => setTranscription(e.target.value)}
-                    className="min-h-[400px] font-mono text-sm"
-                    placeholder="Transcription will appear here..."
-                  />
-                  <div className="mt-4 flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={copyToClipboard}
-                    >
-                      Copy to Clipboard
-                    </Button>
-                    <Button variant="outline" size="sm" onClick={exportAsText}>
-                      Export as Text
-                    </Button>
-                  </div>
-                </div>
+                <Tabs defaultValue="filtered" className="w-full">
+                  <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="filtered">Filtered</TabsTrigger>
+                    <TabsTrigger value="original">Original</TabsTrigger>
+                    <TabsTrigger value="audio">Audio</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="filtered" className="mt-4">
+                    <div>
+                      <p className="text-sm text-gray-600 mb-2">
+                        Filtered transcription (non-important parts removed)
+                      </p>
+                      <Textarea
+                        value={transcription}
+                        onChange={(e) => setTranscription(e.target.value)}
+                        className="min-h-[400px] font-mono text-sm"
+                        placeholder="Filtered transcription will appear here..."
+                      />
+                      <div className="mt-4 flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => copyToClipboard(transcription)}
+                        >
+                          Copy to Clipboard
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() =>
+                            exportAsText(
+                              transcription,
+                              `consultation-filtered-${
+                                new Date().toISOString().split("T")[0]
+                              }.txt`
+                            )
+                          }
+                        >
+                          Export as Text
+                        </Button>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="original" className="mt-4">
+                    <div>
+                      <p className="text-sm text-gray-600 mb-2">
+                        Original transcription (complete, unfiltered)
+                      </p>
+                      <Textarea
+                        value={originalTranscription}
+                        onChange={(e) =>
+                          setOriginalTranscription(e.target.value)
+                        }
+                        className="min-h-[400px] font-mono text-sm"
+                        placeholder="Original transcription will appear here..."
+                      />
+                      <div className="mt-4 flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => copyToClipboard(originalTranscription)}
+                        >
+                          Copy to Clipboard
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() =>
+                            exportAsText(
+                              originalTranscription,
+                              `consultation-original-${
+                                new Date().toISOString().split("T")[0]
+                              }.txt`
+                            )
+                          }
+                        >
+                          Export as Text
+                        </Button>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="audio" className="mt-4">
+                    <div className="space-y-4">
+                      <p className="text-sm text-gray-600">
+                        Audio recording stored securely in cloud storage
+                      </p>
+                      {audioUrl && (
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+                            <Link className="h-4 w-4 text-gray-500" />
+                            <span className="text-sm font-mono text-gray-700 flex-1 truncate">
+                              {audioUrl}
+                            </span>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => copyToClipboard(audioUrl)}
+                            >
+                              Copy URL
+                            </Button>
+                          </div>
+                          <audio controls className="w-full">
+                            <source src={audioUrl} type="audio/webm" />
+                            Your browser does not support the audio element.
+                          </audio>
+                          <div className="text-xs text-gray-500">
+                            Note: Audio files are permanently stored and can be
+                            accessed anytime using the URL above.
+                          </div>
+                        </div>
+                      )}
+                      {!audioUrl && (
+                        <div className="text-center text-gray-500 py-8">
+                          Audio URL will appear here after transcription
+                        </div>
+                      )}
+                    </div>
+                  </TabsContent>
+                </Tabs>
               )}
 
               {transcriptionState === "error" && (
