@@ -32,7 +32,6 @@ export async function uploadToR2(
     return {
       success: true,
       key,
-      url: `${process.env.R2_PUBLIC_URL}/${key}`,
       etag: result.ETag,
     };
   } catch (error) {

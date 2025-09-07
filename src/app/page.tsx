@@ -876,10 +876,35 @@ export default function Home() {
                               Copy URL
                             </Button>
                           </div>
-                          <audio controls className="w-full">
+                          <audio controls className="w-full" preload="metadata">
                             <source src={audioUrl} type="audio/webm" />
+                            <source src={audioUrl} type="audio/wav" />
+                            <source src={audioUrl} type="audio/mp3" />
                             Your browser does not support the audio element.
                           </audio>
+                          <div className="flex gap-2 mt-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => window.open(audioUrl, "_blank")}
+                            >
+                              Open in New Tab
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const link = document.createElement("a");
+                                link.href = audioUrl;
+                                link.download = `consultation-${
+                                  new Date().toISOString().split("T")[0]
+                                }.webm`;
+                                link.click();
+                              }}
+                            >
+                              Download Audio
+                            </Button>
+                          </div>
                           <div className="text-xs text-gray-500">
                             Note: Audio files are permanently stored and can be
                             accessed anytime using the URL above.

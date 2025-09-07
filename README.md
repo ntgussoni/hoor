@@ -56,7 +56,6 @@ R2_ACCESS_KEY_ID=your_r2_access_key_id_here
 R2_SECRET_ACCESS_KEY=your_r2_secret_access_key_here
 R2_BUCKET_NAME=your_r2_bucket_name_here
 R2_ENDPOINT_URL=https://your-account-id.r2.cloudflarestorage.com
-R2_PUBLIC_URL=https://your-public-domain.com
 ```
 
 ### 3. API Keys Setup
@@ -80,7 +79,7 @@ R2_PUBLIC_URL=https://your-public-domain.com
 2. Go to R2 Object Storage
 3. Create a bucket
 4. Create API tokens with R2 permissions
-5. Set up a custom domain for public access (optional)
+5. Note: All audio access is handled through signed URLs - no public domain needed
 
 ### 4. Run Development Server
 
@@ -123,7 +122,7 @@ Transcribes audio files using ElevenLabs and filters content with OpenAI.
   "originalTranscription": "Raw transcription text...",
   "language": "nl",
   "languageProbability": 0.98,
-  "audioUrl": "https://r2-url/recording.webm"
+  "audioUrl": "/api/audio/recording-key"
 }
 ```
 
