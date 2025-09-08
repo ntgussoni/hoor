@@ -26,6 +26,8 @@ Your task is to analyze the transcription and create a structured veterinary med
 - Maintain clinical accuracy and completeness
 - Write everything in the language of the transcription
 - Focus only on medical information, ignore greetings, small talk, and administrative discussions
+- NEVER make up information, NEVER propose a treatment plan.
+- the transcriptions will contain multiple speakers, try to label them as Veterinarian,Assistant 1, Assistant 2, and Owner 1, Owner 2, etc.
 
 Original transcription:
 ${rawTranscription}

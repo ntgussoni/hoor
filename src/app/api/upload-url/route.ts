@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      signedUrl: result.signedUrl,
+      uploadUrl: result.signedUrl,
       key: result.key,
       expiresIn: result.expiresIn,
     });
